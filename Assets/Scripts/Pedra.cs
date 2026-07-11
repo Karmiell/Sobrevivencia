@@ -9,7 +9,6 @@ public class Pedra : BaseItem
 
     public override void Interact()
     {
-       if(!itemSO.isUsable)return;
        OnItemPickEvent(itemSO);
 
        InteractionSelector.Instance.RemoveItemFromListUsable(this);

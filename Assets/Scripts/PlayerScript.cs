@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public static PlayerScript Instance;
 
  private GameObject interactebleSelect;
  private BaseItem usableSelect;
+public event Action<ItemSO> OnItemQuantidadeChange;
+
 
  [SerializeField]private List<ItemSO> inventario;
 
@@ -23,11 +26,12 @@ public static PlayerScript Instance;
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    inventario = new List<ItemSO>();
+
     }
 
     private void Start()
     {
-    inventario = new List<ItemSO>();
 
     InputPlayerHandler.Instance.OnInterationPress += InputPlayerHandler_OnInterationPress;
     MovimentScript.OnAnyMovimentValue += MovimentScript_OnAnyMovimentValue;    
@@ -36,6 +40,14 @@ public static PlayerScript Instance;
 
     private void BaseItem_OnItemPick(object sender, BaseItem.OnItemPickEventArgs e)
     {
+        if (inventario.Contains(e.itemSO))
+        {
+           foreach(var atual in inventario)
+            {
+                if(atual == e.itemSO)OnItemQuantidadeChange?.Invoke(atual);
+            }
+            return;
+        }
         inventario.Add(e.itemSO);
     }
 

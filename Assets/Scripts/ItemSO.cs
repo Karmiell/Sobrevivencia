@@ -5,9 +5,13 @@ using UnityEngine.UI;
 [CreateAssetMenu]
 public class ItemSO : ScriptableObject
 {
-public Image Icon;
+public Sprite Icon;
 public string itemName;
 public bool isStakable;
-public bool isUsable;
 public BaseItem use;
+
+    public override string ToString()
+    {
+        return itemName;
+    }
 }
