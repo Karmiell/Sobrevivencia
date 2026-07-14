@@ -6,6 +6,7 @@ using UnityEngine;
 public class Inventario_Sloot : MonoBehaviour
 {
    private ItemSO itemSO = default;
+   private const string VAZIO = "VAZIO";
    [SerializeField]private TextMeshProUGUI itemName;
    [SerializeField]private TextMeshProUGUI itemQuantidade;
 
@@ -13,8 +14,9 @@ public class Inventario_Sloot : MonoBehaviour
     {
         itemSO = slootUI.GetDateDados();
         itemName.text = slootUI.GetDateString();
-        itemQuantidade.text = slootUI.GetDateInt().ToString();
-        if(!itemSO.IsUnityNull())itemQuantidade.text = (int.Parse(itemQuantidade.text) + 1).ToString();
+        if(slootUI.GetDateString().ToUpper() == VAZIO)itemQuantidade.text = "0";
+        else itemQuantidade.text = slootUI.GetDateInt().ToString();
+        
+        
     }
- 
 }

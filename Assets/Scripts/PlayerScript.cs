@@ -37,6 +37,12 @@ public event Action<ItemSO> OnItemQuantidadeChange;
     MovimentScript.OnAnyMovimentValue += MovimentScript_OnAnyMovimentValue;    
     BaseItem.OnItemPick += BaseItem_OnItemPick;
     }
+    private void OnDisable()
+    {
+    InputPlayerHandler.Instance.OnInterationPress -= InputPlayerHandler_OnInterationPress;
+    MovimentScript.OnAnyMovimentValue -= MovimentScript_OnAnyMovimentValue;    
+    BaseItem.OnItemPick -= BaseItem_OnItemPick;
+    }
 
     private void BaseItem_OnItemPick(object sender, BaseItem.OnItemPickEventArgs e)
     {

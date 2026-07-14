@@ -6,16 +6,15 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Inventario_ScreenUi : MonoBehaviour
+public class InventarioScreenManager : MonoBehaviour
 {
 [SerializeField]private Transform screenConteiner;
 [SerializeField]private Transform sloot_empty;
 [SerializeField]private Inventario_Sloot[] slootSingleArray;  
 [SerializeField]private int inventarioSize = 8;
+private static SlootUI[] inventarioArrayData;
 
 
-
-private SlootUI[] inventarioArrayData;
 
     private void Start()
     {
@@ -25,6 +24,11 @@ private SlootUI[] inventarioArrayData;
         BaseItem.OnItemPick += BaseItem_OnItemPick;
         PlayerScript.Instance.OnItemQuantidadeChange += PlayerScript_OnItemQuantidadeChange;
     }
+    private void OnDisable()
+    {
+    BaseItem.OnItemPick -= BaseItem_OnItemPick;
+    PlayerScript.Instance.OnItemQuantidadeChange -= PlayerScript_OnItemQuantidadeChange; 
+    }
 
     private void PlayerScript_OnItemQuantidadeChange(ItemSO itemSO)
     {
@@ -32,13 +36,17 @@ private SlootUI[] inventarioArrayData;
         {
             if(atual.GetDateDados() == itemSO)atual.SetQuantidadeUP();
         }
+    
     }
 
     private void BaseItem_OnItemPick(object sender, BaseItem.OnItemPickEventArgs e)
     {
         UpdateDate();
         UpdateVisual();
-       
+       foreach(var atual in inventarioArrayData)
+        {
+            Debug.Log($"numero de itens do tipo {atual.GetDateString()} atualmente é :{atual.GetDateInt()}\n");
+        }
     }
 
     private void UpdateDate()
@@ -70,15 +78,18 @@ private SlootUI[] inventarioArrayData;
           slootSingleArray[i].SetDateFromSlootUI(inventarioArrayData[i]);
         }
     }
+
+    public static SlootUI[] GetInventarioData() => inventarioArrayData;
 }
 
+[Serializable]
 public class SlootUI
 {
     private string nameItem;
     private int quantidadeItem;
     private ItemSO dados;
 
-    public SlootUI(int quantidadeItem = 0,string nameItem = "Vazio", ItemSO dados = default)
+    public SlootUI(int quantidadeItem = 1,string nameItem = "Vazio", ItemSO dados = default)
     {
         this.nameItem = nameItem;
         this.quantidadeItem = quantidadeItem;
@@ -89,6 +100,7 @@ public class SlootUI
         if(itemSO == default)return;
         nameItem = itemSO.itemName;
         dados = itemSO; 
+       
     }
     public void SetQuantidadeUP()
     {

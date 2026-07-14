@@ -29,6 +29,12 @@ public class InputPlayerHandler : MonoBehaviour
         inputActions.Player.Interaction_Alt.performed += Interaction_Alt_performed;
         
     }
+    private void OnDisable()
+    {
+        inputActions.Player.Interaction_Main.performed -= Interaction_Main_performed;
+        inputActions.Player.Interaction_Alt.performed -= Interaction_Alt_performed;
+        inputActions.Disable();
+    }
 
     public Vector2 GetMovimentInputNormalized() => inputActions.Player.Moviment.ReadValue<Vector2>();
 
