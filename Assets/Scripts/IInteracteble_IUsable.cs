@@ -6,7 +6,7 @@ public interface IInteracteble
 {
  public void Interact();
 
- public virtual string GeTNameInteraction() => "";
+ public virtual string GetNameInteraction() => "";
 }
 
 

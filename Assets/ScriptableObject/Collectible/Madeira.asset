@@ -15,5 +15,5 @@ MonoBehaviour:
   Icon: {fileID: 0}
   itemName: Madeira
   isStakable: 1
-  quantidadeItem: 0
   use: {fileID: 1058650227405187778, guid: 15c5e5f09e790b4498754d302fa127f3, type: 3}
+  visual: {fileID: 9180739227756589753, guid: 15c5e5f09e790b4498754d302fa127f3, type: 3}

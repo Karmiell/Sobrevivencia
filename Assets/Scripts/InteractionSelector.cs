@@ -33,7 +33,7 @@ public static InteractionSelector Instance;
         if(other.TryGetComponent<IInteracteble>(out var result))
         {
             interacteblesList.Add(other.gameObject);
-            Debug.Log($"Interação de {result.GeTNameInteraction()} a vista!");
+            Debug.Log($"Interação de {result.GetNameInteraction()} a vista!");
         }
         if(other.TryGetComponent<BaseItem>(out var item))
         {

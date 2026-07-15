@@ -20,7 +20,7 @@ public class Rocha : MonoBehaviour,IInteracteble
         if(atualInteractionNumber == maxAmuntInteraction)gameObject.SetActive(false);  
     }
 
-    string IInteracteble.GeTNameInteraction()
+    string IInteracteble.GetNameInteraction()
     {
         return "minerar";
     }    

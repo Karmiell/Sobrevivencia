@@ -20,7 +20,7 @@ private static SlootUI[] inventarioArrayData;
     {
         inventarioArrayData = new SlootUI[inventarioSize];
         slootSingleArray = new Inventario_Sloot[inventarioSize];
-        CreateAtualItem();
+        CreateAtualItemSlootDate();
         BaseItem.OnItemPick += BaseItem_OnItemPick;
         PlayerScript.Instance.OnItemQuantidadeChange += PlayerScript_OnItemQuantidadeChange;
     }
@@ -43,10 +43,7 @@ private static SlootUI[] inventarioArrayData;
     {
         UpdateDate();
         UpdateVisual();
-       foreach(var atual in inventarioArrayData)
-        {
-            Debug.Log($"numero de itens do tipo {atual.GetDateString()} atualmente é :{atual.GetDateInt()}\n");
-        }
+      
     }
 
     private void UpdateDate()
@@ -68,7 +65,7 @@ private static SlootUI[] inventarioArrayData;
     }
 
 
-    private void CreateAtualItem()
+    private void CreateAtualItemSlootDate()
     {
      for(int i = 0 ; i < inventarioSize; i++)
         {
@@ -79,8 +76,11 @@ private static SlootUI[] inventarioArrayData;
         }
     }
 
-    public static SlootUI[] GetInventarioData() => inventarioArrayData;
+public static SlootUI[] GetInventarioData() => inventarioArrayData;
 }
+
+
+
 
 [Serializable]
 public class SlootUI
@@ -88,25 +88,37 @@ public class SlootUI
     private string nameItem;
     private int quantidadeItem;
     private ItemSO dados;
+    private Inventario_Sloot mySloot;
 
-    public SlootUI(int quantidadeItem = 1,string nameItem = "Vazio", ItemSO dados = default)
+    public SlootUI(Inventario_Sloot mySloot = default ,int quantidadeItem = 1,string nameItem = "Vazio", ItemSO dados = default)
     {
+        this.mySloot = mySloot;
         this.nameItem = nameItem;
         this.quantidadeItem = quantidadeItem;
         this.dados = dados;
     }
     public void SetDateFromItemSO(ItemSO itemSO = default)
     {
-        if(itemSO == default)return;
+        if(itemSO == default)
+        {
+            return;
+        }
         nameItem = itemSO.itemName;
         dados = itemSO; 
        
     }
-    public void SetQuantidadeUP()
+    public void SetQuantidadeUP() => quantidadeItem++;
+    public void SetQuantidadeDown() => quantidadeItem--;
+    public void SetSlootSingle(Inventario_Sloot sloot) => mySloot = sloot; 
+    public void ClearSlootUIDate()
     {
-        quantidadeItem++;
+        nameItem = "Vazio";
+        quantidadeItem = 1;
+        dados = default;
     }
 
+
+    public Inventario_Sloot GetMySlootSingle() => mySloot;
     public ItemSO GetDateDados() => dados;
     public int GetDateInt() => quantidadeItem;
     public string GetDateString() => nameItem;

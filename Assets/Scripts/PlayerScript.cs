@@ -3,6 +3,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -36,12 +37,46 @@ public event Action<ItemSO> OnItemQuantidadeChange;
     InputPlayerHandler.Instance.OnInterationPress += InputPlayerHandler_OnInterationPress;
     MovimentScript.OnAnyMovimentValue += MovimentScript_OnAnyMovimentValue;    
     BaseItem.OnItemPick += BaseItem_OnItemPick;
+    BaseItem.OnItemDrop += BaseItem_OnItemDrop;
     }
+
+    private void Update()
+    {
+        if(!Keyboard.current.qKey.wasPressedThisFrame)return;
+        if(inventario.Count == 0)return;
+        inventario[0].use.Drop(transform);
+    }
+
     private void OnDisable()
     {
     InputPlayerHandler.Instance.OnInterationPress -= InputPlayerHandler_OnInterationPress;
     MovimentScript.OnAnyMovimentValue -= MovimentScript_OnAnyMovimentValue;    
     BaseItem.OnItemPick -= BaseItem_OnItemPick;
+    BaseItem.OnItemDrop -= BaseItem_OnItemDrop;
+    }
+
+    private void BaseItem_OnItemDrop(object sender, BaseItem.OnItemPickEventArgs e)
+    {
+        foreach(var atual in InventarioScreenManager.GetInventarioData())
+        {
+            if(atual.GetDateDados() == e.itemSO)
+            {
+                if(atual.GetDateInt() > 1)
+                {
+                    atual.SetQuantidadeDown();
+                    atual.GetMySlootSingle().SetDateFromSlootUI(atual);
+                    break;
+                }
+                else 
+                {
+                    inventario.Remove(atual.GetDateDados());
+                    atual.ClearSlootUIDate();
+                    atual.GetMySlootSingle().SetDateFromSlootUI(atual);
+                    break;
+                }
+                
+            }
+        }
     }
 
     private void BaseItem_OnItemPick(object sender, BaseItem.OnItemPickEventArgs e)
@@ -93,7 +128,7 @@ public event Action<ItemSO> OnItemQuantidadeChange;
     private void HandleInteractionAlt()
     {
       if(usableSelect.IsUnityNull())return;
-      usableSelect.Interact();
+      usableSelect.PickUp();
     }
     
 public GameObject GetInteractebleObject() => interactebleSelect;

@@ -15,5 +15,5 @@ MonoBehaviour:
   Icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   itemName: Pedra
   isStakable: 1
-  quantidadeItem: 0
   use: {fileID: 5584074833567083211, guid: 7733cf6ecab354046ac955d82c7f4e59, type: 3}
+  visual: {fileID: 9180739227756589753, guid: 7733cf6ecab354046ac955d82c7f4e59, type: 3}

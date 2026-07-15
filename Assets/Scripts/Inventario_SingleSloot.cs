@@ -12,11 +12,11 @@ public class Inventario_Sloot : MonoBehaviour
 
    public void SetDateFromSlootUI(SlootUI slootUI)
     {
+        slootUI.SetSlootSingle(this);
         itemSO = slootUI.GetDateDados();
         itemName.text = slootUI.GetDateString();
         if(slootUI.GetDateString().ToUpper() == VAZIO)itemQuantidade.text = "0";
         else itemQuantidade.text = slootUI.GetDateInt().ToString();
-        
         
     }
 }

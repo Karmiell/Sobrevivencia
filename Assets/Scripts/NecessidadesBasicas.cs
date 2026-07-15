@@ -120,7 +120,5 @@ private void MyReset()
        vidaAtual = vidaMax;
        fomeAtual = fomeMax; 
     }
-
-  
     
 }
