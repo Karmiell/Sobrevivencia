@@ -17,7 +17,7 @@ public class PickUp_Drop : BaseItem
     }
     public override void Drop(Transform player)
     {
-       var dropPosition = player.transform.position + player.transform.forward + transform.up;
+       var dropPosition = player.transform.position + player.transform.forward;
        Instantiate(itemSO.visual, dropPosition, quaternion.identity);
        OnItemDropEventCall(itemSO);
     }

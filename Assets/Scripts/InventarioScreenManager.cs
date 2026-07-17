@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InventarioScreenManager : MonoBehaviour
 {
@@ -12,7 +13,11 @@ public class InventarioScreenManager : MonoBehaviour
 [SerializeField]private Transform sloot_empty;
 [SerializeField]private Inventario_Sloot[] slootSingleArray;  
 [SerializeField]private int inventarioSize = 8;
+
+
 private static SlootUI[] inventarioArrayData;
+
+
 
 
 
@@ -29,6 +34,10 @@ private static SlootUI[] inventarioArrayData;
     BaseItem.OnItemPick -= BaseItem_OnItemPick;
     PlayerScript.Instance.OnItemQuantidadeChange -= PlayerScript_OnItemQuantidadeChange; 
     }
+
+
+
+
 
     private void PlayerScript_OnItemQuantidadeChange(ItemSO itemSO)
     {
@@ -58,10 +67,11 @@ private static SlootUI[] inventarioArrayData;
 
     private void UpdateVisual()
     {
-        for(int i = 0 ; i < inventarioSize; i++)
+        foreach(var atual in slootSingleArray)
         {
-            slootSingleArray[i].SetDateFromSlootUI(inventarioArrayData[i]);
+            atual.SetDateFromSlootUI(atual.GetSlootUI());
         }
+        
     }
 
 
@@ -76,7 +86,10 @@ private static SlootUI[] inventarioArrayData;
         }
     }
 
+
+
 public static SlootUI[] GetInventarioData() => inventarioArrayData;
+
 }
 
 
@@ -99,10 +112,8 @@ public class SlootUI
     }
     public void SetDateFromItemSO(ItemSO itemSO = default)
     {
-        if(itemSO == default)
-        {
-            return;
-        }
+        if(itemSO == default)return;
+        
         nameItem = itemSO.itemName;
         dados = itemSO; 
        

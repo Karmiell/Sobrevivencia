@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7231193593890964387}
   - component: {fileID: 4720509925597040366}
   - component: {fileID: 3441397917759963412}
+  - component: {fileID: 4869362799271054928}
   m_Layer: 5
   m_Name: Slot(Empty)
   m_TagString: Untagged
@@ -135,8 +136,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af59fa9088e04842b1632ae8c18809d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  layerMaskUI:
+    serializedVersion: 2
+    m_Bits: 32
   itemName: {fileID: 7339621587704263900}
   itemQuantidade: {fileID: 4590829263132599105}
+--- !u!65 &4869362799271054928
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2575251187047303724}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 158, y: 28, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5101293519223166302
 GameObject:
   m_ObjectHideFlags: 0
