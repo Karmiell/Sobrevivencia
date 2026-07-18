@@ -16,4 +16,9 @@ MonoBehaviour:
   itemName: Madeira
   isStakable: 1
   use: {fileID: 1058650227405187778, guid: 15c5e5f09e790b4498754d302fa127f3, type: 3}
-  visual: {fileID: 9180739227756589753, guid: 15c5e5f09e790b4498754d302fa127f3, type: 3}
+  visual:
+    m_AssetGUID: 15c5e5f09e790b4498754d302fa127f3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0

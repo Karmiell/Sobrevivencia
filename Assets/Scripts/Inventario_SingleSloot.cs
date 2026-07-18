@@ -6,20 +6,31 @@ using UnityEngine.EventSystems;
 
 public class Inventario_Sloot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField]private LayerMask layerMaskUI;
-   private ItemSO itemSO = default;
-   private SlootUI slootUI = default;
-   private const string VAZIO = "VAZIO";
+private const string VAZIO = "VAZIO";
+
+[SerializeField]private TextMeshProUGUI slootHoldingText;
+[SerializeField]private TextMeshProUGUI slootHoldingQuantidade;
+[SerializeField]private TextMeshProUGUI itemName;
+[SerializeField]private TextMeshProUGUI itemQuantidade;
+[SerializeField]private LayerMask layerMaskUI;
+[SerializeField]private RectTransform dragObject;
+[SerializeField]private GameObject clone;
+[SerializeField]private Canvas canvas;
+
+private ItemSO itemSO = default;
+private SlootUI slootUI = default;
 private bool isHoldingSloot = false;
-private Inventario_Sloot slootholding;
-private GameObject clone;
+private Inventario_Sloot slootHolding;
 
 
-   [SerializeField]private TextMeshProUGUI itemName;
-   [SerializeField]private TextMeshProUGUI itemQuantidade;
+    private void Awake()
+    {
+        canvas = GetComponentInParent<Canvas>();
+    }
 
 
- public void OnBeginDrag(PointerEventData pointerEventData)
+
+    public void OnBeginDrag(PointerEventData pointerEventData)
     {
         
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -30,11 +41,10 @@ private GameObject clone;
           if(hitInfo.TryGetComponent<Inventario_Sloot>(out var result))
             {
              if(result.GetSlootUI().GetDateDados() == default)return;
-
-                slootholding = result;
-                isHoldingSloot = true;
-                clone = Instantiate(gameObject, transform.position, Quaternion.identity);
-
+             slootHolding = result;
+             isHoldingSloot = true;
+             clone.SetActive(true);
+             SetParmsClone();
             }  
         }
         else Debug.Log(hitInfo);
@@ -43,8 +53,9 @@ public void OnDrag(PointerEventData pointerEventData)
     {
        
         if(!isHoldingSloot)return;
-        
-        clone.transform.localPosition += Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(canvas.transform as RectTransform, pointerEventData.position, pointerEventData.pressEventCamera, out Vector3 localPoint);
+
+        dragObject.position = localPoint;
     }
 public void OnEndDrag(PointerEventData pointerEventData)
     {
@@ -66,7 +77,7 @@ public void OnEndDrag(PointerEventData pointerEventData)
                     ClearSlootHoldingParams();
                     return;
                 }
-               SwitchDateFromSlootSingle(slootholding, result);
+               SwitchDateFromSlootSingle(slootHolding, result);
                ClearSlootHoldingParams();
                return; 
             }
@@ -76,12 +87,17 @@ public void OnEndDrag(PointerEventData pointerEventData)
         
     }
 
+    private void SetParmsClone()
+    {
+        slootHoldingQuantidade.text = slootHolding.GetSlootUI().GetDateInt().ToString();
+        slootHoldingText.text = slootHolding.GetSlootUI().GetDateString();
+    }
 
     private void ClearSlootHoldingParams()
     {
-        slootholding = null;
+        slootHolding = null;
         isHoldingSloot = false;
-        Destroy(clone.gameObject); 
+        clone.SetActive(false); 
     }
 
 public void SwitchDateFromSlootSingle(Inventario_Sloot oldSloot, Inventario_Sloot newSloot)

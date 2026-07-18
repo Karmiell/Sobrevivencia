@@ -16,4 +16,9 @@ MonoBehaviour:
   itemName: Pedra
   isStakable: 1
   use: {fileID: 5584074833567083211, guid: 7733cf6ecab354046ac955d82c7f4e59, type: 3}
-  visual: {fileID: 9180739227756589753, guid: 7733cf6ecab354046ac955d82c7f4e59, type: 3}
+  visual:
+    m_AssetGUID: 7733cf6ecab354046ac955d82c7f4e59
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0

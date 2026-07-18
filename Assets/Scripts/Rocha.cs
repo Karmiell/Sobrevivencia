@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class Rocha : MonoBehaviour,IInteracteble
 {
@@ -7,7 +8,7 @@ public class Rocha : MonoBehaviour,IInteracteble
     private int maxAmuntInteraction = 3;
     private int atualInteractionNumber = 0;
 
-    [SerializeField]private GameObject pedra;
+    [SerializeField]private AssetReference pedra;
     [SerializeField]private float raioInterno = .8f;
     [SerializeField]private float raioExterno = 2.5f;
 
@@ -34,6 +35,6 @@ public class Rocha : MonoBehaviour,IInteracteble
         var z = math.sin(angulo) * distancia;
 
         var spawnPoint = new Vector3(x,1f,z) + transform.position;
-        Instantiate(pedra,spawnPoint,quaternion.identity);
+        pedra.InstantiateAsync(spawnPoint,quaternion.identity);
     }
 }
