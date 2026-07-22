@@ -34,7 +34,11 @@ public class Rocha : MonoBehaviour,IInteracteble
         var x = math.cos(angulo) * distancia;
         var z = math.sin(angulo) * distancia;
 
-        var spawnPoint = new Vector3(x,1f,z) + transform.position;
+        var initalSpawn = new Vector3(x,1f,z) + transform.position;
+        var gridPosition = GridHandler.GetGridPositionFromWorlposition(initalSpawn);
+        var spawnPoint = GridHandler.GetWorlPositionFromGridPosition(gridPosition);
         pedra.InstantiateAsync(spawnPoint,quaternion.identity);
+        Debug.Log($"O item: Pedra, Spawnou na posição: {gridPosition.ToString()} do Grid!");
+
     }
 }

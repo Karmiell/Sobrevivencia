@@ -10,10 +10,19 @@ public class PickUp_Drop : BaseItem
 [SerializeField]private ItemSO itemSO;
 [SerializeField]private bool IsHandPlace;
 
-  
+
+
+    private void Start()
+    {
+
+    }
+
 
     public override void PickUp()
     {
+       var gridPosition = GridHandler.GetGridPositionFromWorlposition(transform.position);
+       var gridObject = GridHandler.GetGridObjectFromGridPosition(gridPosition);
+       Debug.Log($"O item:{itemSO.itemName}, sai da posição: {gridObject.ToString()} do Grid!");
        OnItemPickEvent(itemSO);
 
        InteractionSelector.Instance.RemoveItemFromListUsable(this);

@@ -11,6 +11,7 @@ public abstract class BaseItem : MonoBehaviour
     }
 
 
+
     public virtual void PickUp(){}
     public virtual void Drop(Transform player){}
 
