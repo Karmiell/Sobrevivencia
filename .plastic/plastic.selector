@@ -1,0 +1,4 @@
+repository "Sobreviv}encia(Projetopessoal)/Sobreviv}encia(Projetopessoal)@2714113@cloud"
+  path "/"
+    br "/main"
+    co "/main"

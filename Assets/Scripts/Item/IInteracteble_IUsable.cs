@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IInteracteble
 {
  public void Interact();
+ public void ExitInteract() { }
 
  public virtual string GetNameInteraction() => "";
 }

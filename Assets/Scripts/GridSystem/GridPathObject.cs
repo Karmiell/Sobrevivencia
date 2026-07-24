@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,29 +9,31 @@ public class GridPathObject
 {
  private GridSystem<GridPathObject> gridSystem;
  private GridPosition gridPosition;
+private bool isWalkable;
+private GridPathObject nodePai;
 
- private int F;
- //private int H = 10;
- private int G = 10;
  
-    public GridPathObject( GridSystem<GridPathObject> gridSystem,GridPosition gridPosition)
+ private int H = 10;
+ private int G = 10;
+ private  int F;
+
+
+    public GridPathObject( GridSystem<GridPathObject> gridSystem,GridPosition gridPosition, bool isWalkable = true)
     {
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
-        
+        this.isWalkable = isWalkable;
     }
-
-    public void SetPathingFromGridPosition(GridPosition origin, GridPosition destiny)
-    {
+    public void SetObstaculo() => this.isWalkable = false;
     
-    }
-    public int GetValueF() => F;
-    public void SetValueG(int mod, bool isDiagonal = false)
+    public void SetValuesForGridPositions(GridPosition origin, GridPosition destiny)
     {
-        if(!isDiagonal)G *= mod;
-        else G = (G+4)*mod; 
+        G = G + (DistanceBetwenGridPositions(origin, this.gridPosition) * G);
+        H = H * DistanceBetwenGridPositions(origin, destiny);
+        F = G + H;
     }
-    private void SetValueH(int mod, int H){}
+    public void SetNodePai(GridPathObject nodePai) => this.nodePai = nodePai;
+
     private int DistanceBetwenGridPositions(GridPosition a, GridPosition b)
     {
       int aX = a.GetX();int aZ = a.GetZ(); int bX = b.GetX(); int bZ = b.GetZ();
@@ -47,4 +50,6 @@ public class GridPathObject
         }
        return false;
     }
+    public  int GetFValue() => F; 
+    public GridPosition GetGridPosition() => gridPosition;
 }
