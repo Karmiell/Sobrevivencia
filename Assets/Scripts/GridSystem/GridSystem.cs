@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 public class GridSystem<TObject>
@@ -10,9 +11,6 @@ public class GridSystem<TObject>
     private int largura;
     private int tamnhoDaCelula;
     private TObject[,] dateMainArray;
-    private List<GridPathObject> nodeClose = new List<GridPathObject>();
-    private List<GridPathObject> nodeOpen = new List<GridPathObject>();
-    private List<GridPathObject> nodesChange = new List<GridPathObject>();
     public GridSystem(int altura, int largura, int tamnhoDaCelula, Func<GridSystem<TObject>, GridPosition, TObject> createObject)
     {
         this.altura = altura;
@@ -29,67 +27,27 @@ public class GridSystem<TObject>
             }
         }
     }
-    private TObject[,] GetTObjectsArroundGridPosition(GridPosition gridPosition)
+
+
+    public List<GridPosition> PickNighborArroundGridPosition(GridPosition origin)
     {
-        var arroundTObjects = new TObject[3,3];
-        int ii = 0;
-        int jj = 0;
-       for(int i = -gridPosition.GetX(); i < (gridPosition.GetX() + 1); i++)
-        {
-            for(int j = -gridPosition.GetZ(); j < (gridPosition.GetZ() + 1); j++)
-            {
-                if (dateMainArray[i, j].GetHashCode() == dateMainArray[gridPosition.GetX(), gridPosition.GetZ()].GetHashCode()) continue;
-                arroundTObjects[ii, jj] = dateMainArray[i, j];
-                jj++;
-            }
-            ii++;
-            jj = 0;
-        }
-        return arroundTObjects;
+     List<GridPosition> nighbors = new List<GridPosition>{
+        origin+new GridPosition(1,0),
+        origin+new GridPosition(0,1),
+        origin+new GridPosition(-1,0),
+        origin+new GridPosition(0,-1),
+     }; 
+     return nighbors;  
     }
-
-    public void AlgoritimoA(GridPosition origin, GridPosition destiny)
-    {
-        var gridObject = GetGridObjectFromGridPosition(origin) as GridPathObject;
-        var pathing = new List<GridPathObject>();
-        int securityVault = 0;
-        while (true) 
-        {
-            nodeOpen = new List<GridPathObject>(){GetTObjectsArroundGridPosition(origin) as GridPathObject};
-        
-            foreach(var atual in nodeOpen)
-            {
-                atual.SetValuesForGridPositions(origin, destiny);
-            }
-            var atualNode = PickHigthFValue(nodeOpen);
-            gridObject.SetNodePai(atualNode);
-            gridObject = atualNode;
-            pathing.Add(gridObject);
-            if(gridObject.GetGridPosition() == destiny)break;
-            if(securityVault >= 50)
-            {
-                Debug.LogError("Não Funcionou :/");
-                break;
-            }
-            securityVault++;
-        }
-
-
-    }
-    private GridPathObject PickHigthFValue(List<GridPathObject> nodeOpen)
-    {
-        List<int> fValueList = new List<int>();
-        foreach(var atual in nodeOpen)
-        {
-            fValueList.Add(atual.GetFValue());
-        }
-        var fMaxValue = fValueList.Max();
-
-        return nodeOpen[fValueList.IndexOf(fMaxValue)];
-    }
+ 
       public Vector3 GetWorlPositionFromGridPosition(GridPosition gridPosition)
     {
         return new Vector3(gridPosition.GetX(),0,gridPosition.GetZ()) * tamnhoDaCelula;
+    }
+     public int DistanceBetwenGridPositions(GridPosition a, GridPosition b)
+    {  
+     var distanRough = a-b;
+      return math.abs(distanRough.GetX()) + math.abs(distanRough.GetZ());
     }
     public GridPosition GetGridPositionFromWorlposition(Vector3 position)
     {
@@ -116,9 +74,12 @@ public class GridSystem<TObject>
     public int GetAltura() => altura;
     public int GetLargura() => largura;
     public TObject[,] GetDateMainArray() => dateMainArray;
-
-    public TObject GetGridObjectFromGridPosition(GridPosition gridPosition)
+    public bool IsInside(GridPosition atual)
     {
-        return dateMainArray[gridPosition.GetX(),gridPosition.GetZ()];
+        if(atual.GetX() < 0 || atual.GetX() > altura ||
+           atual.GetZ() < 0 || atual.GetZ() > largura)return false;
+        else return true;
+    
     }
+
 }

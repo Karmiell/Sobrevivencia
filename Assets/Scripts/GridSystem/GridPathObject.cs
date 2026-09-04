@@ -7,49 +7,33 @@ using UnityEngine;
                                                 F = Os menores valores de F serão a rota mais curta possivel*/
 public class GridPathObject
 {
+private const int MOVE_FORWARDS = 10;
  private GridSystem<GridPathObject> gridSystem;
  private GridPosition gridPosition;
-private bool isWalkable;
-private GridPathObject nodePai;
-
- 
- private int H = 10;
- private int G = 10;
+private GridPathObject cameFrom;
+ private int H;
+ private int G;
  private  int F;
 
 
-    public GridPathObject( GridSystem<GridPathObject> gridSystem,GridPosition gridPosition, bool isWalkable = true)
+    public GridPathObject( GridSystem<GridPathObject> gridSystem,GridPosition gridPosition)
     {
         this.gridSystem = gridSystem;
         this.gridPosition = gridPosition;
-        this.isWalkable = isWalkable;
-    }
-    public void SetObstaculo() => this.isWalkable = false;
-    
-    public void SetValuesForGridPositions(GridPosition origin, GridPosition destiny)
-    {
-        G = G + (DistanceBetwenGridPositions(origin, this.gridPosition) * G);
-        H = H * DistanceBetwenGridPositions(origin, destiny);
-        F = G + H;
-    }
-    public void SetNodePai(GridPathObject nodePai) => this.nodePai = nodePai;
-
-    private int DistanceBetwenGridPositions(GridPosition a, GridPosition b)
-    {
-      int aX = a.GetX();int aZ = a.GetZ(); int bX = b.GetX(); int bZ = b.GetZ();
       
-      return math.abs(math.abs(aX) - math.abs(aZ)) + math.abs(math.abs(bX) - math.abs(bZ));
     }
-    private bool FirstIsDiagonal(GridPosition gridPosition, GridPosition origin)
+    
+    public void SetH(int amount)
     {
-        if(gridPosition == origin)return false;
-        else
-        {
-            if(gridPosition.GetX() != origin.GetX()&& 
-               gridPosition.GetZ() != origin.GetZ())return true;
-        }
-       return false;
+       H = amount + MOVE_FORWARDS;
     }
+    public void SetG(int amount)
+    {
+       G = MOVE_FORWARDS * amount;
+    }
+    public void CalculeF() => F = G + H;
+  
+    public void SetNodePai(GridPathObject nodePai) => cameFrom = nodePai;
     public  int GetFValue() => F; 
     public GridPosition GetGridPosition() => gridPosition;
 }

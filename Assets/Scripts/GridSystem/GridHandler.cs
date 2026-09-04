@@ -5,6 +5,7 @@ public class GridHandler : MonoBehaviour
 {
     public static GridHandler Instance;
     GridSystem<GridObject> gridSystem;
+    GridSystem<GridPathObject> gridPathSystem;
     GridSystem<GridPathObject> gridSystemPath;
 
     private void Awake()
@@ -24,7 +25,11 @@ public class GridHandler : MonoBehaviour
         {
             return new GridObject(GridSystem, GridPosition);
         });
-        
+        gridPathSystem = new GridSystem<GridPathObject>(20, 20, 2, (GridPathSystem, GridPathPosition) =>
+        {
+            return new GridPathObject(GridPathSystem,GridPathPosition);
+        }
+        );
     }
     
 
@@ -34,5 +39,7 @@ public class GridHandler : MonoBehaviour
     public static GridPosition GetGridPositionFromWorlposition(Vector3 position) => Instance.gridSystem.GetGridPositionFromWorlposition(position);
     public static GridObject GetGridObjectFromGridPosition(GridPosition gridPosition) => Instance.gridSystem.GetGridObjectMainFromGridPosition(gridPosition);
     public static GridObject[,] GetGridObjectArray() => Instance.gridSystem.GetDateMainArray();
+
+    public static GridSystem<GridPathObject> GetSystemPath() => GridHandler.Instance.gridPathSystem;
    
 } 
