@@ -19,7 +19,7 @@ public struct GridPosition
      
     public override string ToString()
     {
-        return $"X:{X}|{Z}";
+        return $"X:{X}|Z:{Z}";
     }
 
     public override bool Equals(object obj)

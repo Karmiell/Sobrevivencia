@@ -25,15 +25,18 @@ private GridPathObject cameFrom;
     
     public void SetH(int amount)
     {
-       H = amount + MOVE_FORWARDS;
+       H = amount;
     }
     public void SetG(int amount)
     {
-       G = MOVE_FORWARDS * amount;
+       G = amount;
     }
     public void CalculeF() => F = G + H;
   
-    public void SetNodePai(GridPathObject nodePai) => cameFrom = nodePai;
-    public  int GetFValue() => F; 
+    public void SetCameFrom(GridPathObject nodePai) => cameFrom = nodePai;
+    public void ResetCameFrom() => cameFrom = null;
+    public  int GetFValue() => F;
+    public  int GetGValue() => G; 
     public GridPosition GetGridPosition() => gridPosition;
+    public GridPathObject GetCameFrom() => cameFrom;
 }

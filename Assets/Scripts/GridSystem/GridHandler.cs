@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class GridHandler : MonoBehaviour
 {
@@ -31,7 +33,34 @@ public class GridHandler : MonoBehaviour
         }
         );
     }
-    
+
+    private void Update()
+    {
+        if (Keyboard.current.tKey.isPressed)
+        {
+            var originGridPosition = new GridPosition(1,1);
+            var endGridPosition =  new GridPosition(2,4);
+            var pathfing = PathingHandler.FindPath(originGridPosition, endGridPosition);
+         
+            for(int i = 0; i < pathfing.Count - 1; i++)
+            {
+                Debug.DrawLine(GetWorlPositionFromGridPosition(pathfing[i]),GetWorlPositionFromGridPosition(pathfing[i + 1]), Color.white, 10f);
+            }
+        }
+    }
+
+    public GridPathObject GetLowestF(List<GridPathObject> list)
+{
+   var supostLowesF = list[0];
+   for(int i = 0; i < list.Count; i++)
+    {
+        if(list[i].GetFValue() < supostLowesF.GetFValue())
+        {
+        supostLowesF = list[i];
+        }
+    }
+    return supostLowesF;
+}
 
     
 
@@ -41,5 +70,28 @@ public class GridHandler : MonoBehaviour
     public static GridObject[,] GetGridObjectArray() => Instance.gridSystem.GetDateMainArray();
 
     public static GridSystem<GridPathObject> GetSystemPath() => GridHandler.Instance.gridPathSystem;
-   
+    public static List<GridPosition> CalculatePath(GridPathObject gridPathObject)
+    {
+        int securityVault = 0;
+        var path = new List<GridPosition>();
+        var endNote = gridPathObject;
+        while(endNote.GetCameFrom() != null)
+        {
+            var gridPosition = endNote.GetGridPosition();
+            if(securityVault >= 50)
+            {
+                Debug.Log("O caminho foi encontrado, mas não foi possivel calcular ele pelas referencias em cada gridpathObject!");
+                break;
+            }
+            path.Add(gridPosition);
+            endNote = endNote.GetCameFrom();
+            securityVault++;
+        }
+        path.Reverse();
+        foreach(var atual in path)
+        {
+            Debug.Log($"Possiçoes do caminho Encontrado:{atual}");
+        }
+        return path;
+    }
 } 

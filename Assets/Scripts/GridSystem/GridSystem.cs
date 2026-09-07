@@ -74,11 +74,11 @@ public class GridSystem<TObject>
     public int GetAltura() => altura;
     public int GetLargura() => largura;
     public TObject[,] GetDateMainArray() => dateMainArray;
-    public bool IsInside(GridPosition atual)
+    public bool IsOutside(GridPosition atual)
     {
         if(atual.GetX() < 0 || atual.GetX() > altura ||
-           atual.GetZ() < 0 || atual.GetZ() > largura)return false;
-        else return true;
+           atual.GetZ() < 0 || atual.GetZ() > largura)return true;
+        else return false;
     
     }
 
